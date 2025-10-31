@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X402 Payment Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .error {
+            color: #d32f2f;
+        }
+        .success {
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>X402 Payment Client</h1>
+        <p>Click the button below to make a payment-enabled request</p>
+
+        <button id="runClient" onclick="runPaymentRequest()">Run Payment Request</button>
+
+        <div id="output" class="output">
+            Output will appear here...
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the client.js functionality
+        // Note: This is a placeholder - you'll need to adapt client.js for browser use
+        // or create a backend API that the browser can call
+
+        window.runPaymentRequest = async function() {
+            const button = document.getElementById('runClient');
+            const output = document.getElementById('output');
+
+            button.disabled = true;
+            output.textContent = 'Processing request...';
+            output.className = 'output';
+
+            try {
+                // Since the original client.js uses Node.js modules, we need to either:
+                // 1. Call a backend API that runs the client.js logic
+                // 2. Use browser-compatible versions of the libraries
+
+                // Example: Make a request to your backend
+                const response = await fetch('/api/payment-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+                output.className = 'output success';
+            } catch (error) {
+                output.textContent = `Error: ${error.message}`;
+                output.className = 'output error';
+            } finally {
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
